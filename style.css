@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: indigo;
   color: #fff;
@@ -58,7 +62,7 @@ p {
 
 @media (max-width: 440px) {
   button {
-    margin-top: 25px;
+    margin-top: 5px;
   }
   #up,
   #down {

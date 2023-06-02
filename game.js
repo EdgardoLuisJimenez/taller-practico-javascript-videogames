@@ -1,15 +1,37 @@
+/**
+ * @type {HTMLCanvasElement};
+ */
 const canvas = document.querySelector("#game");
 const game = canvas.getContext("2d");
 
-window.addEventListener('load', startGame);
+let canvasSize;
+let elementsSize;
+
+window.addEventListener("load", setCanvasSize);
+window.addEventListener("resize", setCanvasSize);
+
+function setCanvasSize() {
+  let canvasSize;
+
+  if (window.innerHeight > window.innerWidth) {
+    canvasSize = window.innerWidth * 0.75;
+  } else {
+    canvasSize = window.innerHeight * 0.75;
+  }
+
+  canvas.setAttribute("width", canvasSize);
+  canvas.setAttribute("height", canvasSize);
+
+  elementsSize = canvasSize / 10;
+
+  startGame();
+}
 
 function startGame() {
-  // game.fillRect(0,50,100,100);
-  // game.clearRect(50,50,50,50);
-  // game.clearRect();
+  game.font = elementsSize + "px Verdana";
+  game.textAlign = "end";
 
-  game.font = '25px Verdana'
-  game.fillStyle = 'purple';
-  game.textAlign = 'center'
-  game.fillText('Platzi', 100, 100)
+  for (let i = 1; i <= 10; i++) {
+    game.fillText(emojis["X"], elementsSize * i + 10, elementsSize);
+  }
 }
