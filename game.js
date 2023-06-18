@@ -31,7 +31,19 @@ function startGame() {
   game.font = elementsSize + "px Verdana";
   game.textAlign = "end";
 
-  for (let i = 1; i <= 10; i++) {
-    game.fillText(emojis["X"], elementsSize * i + 10, elementsSize);
+  const map = maps[2];
+  const mapRows = map.trim().split("\n");
+  const mapRowCols = mapRows.map((row) => row.trim().split(""));
+  console.log(mapRowCols);
+
+  for (let row = 1; row <= 10; row++) {
+    for (let column = 1; column <= 10; column++) {
+      // Parameters(text, xAxis, yAxis)
+      game.fillText(
+        emojis[mapRowCols[row - 1][column - 1]],
+        elementsSize * row + 10,
+        elementsSize * column - 10
+      );
+    }
   }
 }
