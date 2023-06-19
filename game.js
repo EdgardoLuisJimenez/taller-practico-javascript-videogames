@@ -31,19 +31,17 @@ function startGame() {
   game.font = elementsSize + "px Verdana";
   game.textAlign = "end";
 
-  const map = maps[2];
+  const map = maps[1];
   const mapRows = map.trim().split("\n");
   const mapRowCols = mapRows.map((row) => row.trim().split(""));
-  console.log(mapRowCols);
+  // console.log(mapRows ,mapRowCols);
 
-  for (let row = 1; row <= 10; row++) {
-    for (let column = 1; column <= 10; column++) {
-      // Parameters(text, xAxis, yAxis)
-      game.fillText(
-        emojis[mapRowCols[row - 1][column - 1]],
-        elementsSize * row + 10,
-        elementsSize * column - 10
-      );
-    }
-  }
+  mapRowCols.forEach((row, rowIndex) => {
+    row.forEach((col, colIndex) => {
+      const emoji = emojis[col];
+      const positionX = elementsSize * (colIndex + 1);
+      const positionY = elementsSize * (rowIndex + 1);
+      game.fillText(emoji, positionX, positionY);
+    });
+  });
 }
