@@ -3,6 +3,10 @@
  */
 const canvas = document.querySelector("#game");
 const game = canvas.getContext("2d");
+const btnUp = document.querySelector("#up");
+const btnLeft = document.querySelector("#left");
+const btnRight = document.querySelector("#right");
+const btnDown = document.querySelector("#down");
 
 let canvasSize;
 let elementsSize;
@@ -33,6 +37,7 @@ function setCanvasSize() {
 }
 
 function startGame() {
+  game.clearRect(0, 0, canvas.width, canvas.height);
   game.font = elementsSize + "px Verdana";
   game.textAlign = "end";
 
@@ -47,10 +52,9 @@ function startGame() {
       const positionY = elementsSize * (rowIndex + 1);
       game.fillText(emoji, positionX, positionY);
 
-      if (col == "O") {
+      if (!playerPosition.x && col == "O") {
         playerPosition.x = positionX;
         playerPosition.y = positionY;
-        console.log({ playerPosition });
       }
     });
   });
@@ -62,18 +66,43 @@ function movePlayer() {
   game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
 }
 
-function move(key) {
-  console.log(`Pressed: ${key}`);
-}
-
-const moveByKey = (event) => {
+btnUp.addEventListener("click", moveUp);
+btnLeft.addEventListener("click", moveLeft);
+btnRight.addEventListener("click", moveRight);
+btnDown.addEventListener("click", moveDown);
+window.addEventListener("keydown", (event) => {
   if (event.key == "ArrowUp") {
-    move("up");
-    playerPosition.y -= elementsSize;
-    startGame();
-  } else if (event.key == "ArrowLeft") move("left");
-  else if (event.key == "ArrowRight") move("right");
-  else if (event.key == "ArrowDown") move("down");
-};
+    moveUp(event.key);
+  } else if (event.key == "ArrowLeft") {
+    moveLeft(event.key);
+  } else if (event.key == "ArrowRight") {
+    moveRight(event.key);
+  } else if (event.key == "ArrowDown") {
+    moveDown(event.key);
+  }
+});
 
-window.addEventListener("keydown", moveByKey);
+function moveUp(key) {
+  console.log(`Pressed: ${key}`);
+  playerPosition.y -= elementsSize;
+  console.log({ playerPosition });
+  startGame();
+}
+function moveLeft(key) {
+  console.log(`Pressed: ${key}`);
+  playerPosition.x -= elementsSize;
+  console.log({ playerPosition });
+  startGame();
+}
+function moveRight(key) {
+  console.log(`Pressed: ${key}`);
+  playerPosition.x += elementsSize;
+  console.log({ playerPosition });
+  startGame();
+}
+function moveDown(key) {
+  console.log(`Pressed: ${key}`);
+  playerPosition.y += elementsSize;
+  console.log({ playerPosition });
+  startGame();
+}
