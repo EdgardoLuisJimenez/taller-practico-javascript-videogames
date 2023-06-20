@@ -27,6 +27,7 @@ function setCanvasSize() {
   } else {
     canvasSize = window.innerHeight * 0.75;
   }
+  canvasSize = Math.floor(canvasSize);
 
   canvas.setAttribute("width", canvasSize);
   canvas.setAttribute("height", canvasSize);
@@ -84,25 +85,37 @@ window.addEventListener("keydown", (event) => {
 
 function moveUp(key) {
   console.log(`Pressed: ${key}`);
-  playerPosition.y -= elementsSize;
-  console.log({ playerPosition });
-  startGame();
+  if (playerPosition.y - elementsSize < elementsSize) {
+    console.log("OUT");
+  } else {
+    playerPosition.y -= elementsSize;
+    startGame();
+  }
 }
 function moveLeft(key) {
   console.log(`Pressed: ${key}`);
-  playerPosition.x -= elementsSize;
-  console.log({ playerPosition });
-  startGame();
+  if (playerPosition.x - elementsSize < elementsSize) {
+    console.log("OUT");
+  } else {
+    playerPosition.x -= elementsSize;
+    startGame();
+  }
 }
-function moveRight(key) {
+function moveRight() {
   console.log(`Pressed: ${key}`);
-  playerPosition.x += elementsSize;
-  console.log({ playerPosition });
-  startGame();
+  if (playerPosition.x + elementsSize > canvasSize) {
+    console.log("OUT");
+  } else {
+    playerPosition.x += elementsSize;
+    startGame();
+  }
 }
 function moveDown(key) {
   console.log(`Pressed: ${key}`);
-  playerPosition.y += elementsSize;
-  console.log({ playerPosition });
-  startGame();
+  if (playerPosition.y + elementsSize > canvasSize) {
+    console.log("OUT");
+  } else {
+    playerPosition.y += elementsSize;
+    startGame();
+  }
 }
