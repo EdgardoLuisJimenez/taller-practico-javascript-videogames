@@ -16,6 +16,11 @@ const playerPosition = {
   y: undefined,
 };
 
+const gitftPosition = {
+  x: undefined,
+  y: undefined,
+};
+
 window.addEventListener("load", setCanvasSize);
 window.addEventListener("resize", setCanvasSize);
 
@@ -42,7 +47,7 @@ function startGame() {
   game.font = elementsSize + "px Verdana";
   game.textAlign = "end";
 
-  const map = maps[0];
+  const map = maps[1];
   const mapRows = map.trim().split("\n");
   const mapRowCols = mapRows.map((row) => row.trim().split(""));
 
@@ -53,9 +58,12 @@ function startGame() {
       const positionY = elementsSize * (rowIndex + 1);
       game.fillText(emoji, positionX, positionY);
 
-      if (!playerPosition.x && col == "O") {
+      if (!playerPosition.x && !playerPosition.y && col == "O") {
         playerPosition.x = positionX;
         playerPosition.y = positionY;
+      } else if (col == "I") {
+        gitftPosition.x = positionX;
+        gitftPosition.y = positionY;
       }
     });
   });
@@ -64,6 +72,16 @@ function startGame() {
 }
 
 function movePlayer() {
+  const giftCollissionX =
+    (playerPosition.x.toFixed(3)) == (gitftPosition.x.toFixed(3));
+  const giftCollissionY =
+    (playerPosition.y.toFixed(3)) == (gitftPosition.y.toFixed(3));
+  const giftCollission = giftCollissionX && giftCollissionY;
+
+  if (giftCollission) {
+    console.log("Subistes de nivel!!");
+  }
+
   game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
 }
 
@@ -101,7 +119,7 @@ function moveLeft(key) {
     startGame();
   }
 }
-function moveRight() {
+function moveRight(key) {
   console.log(`Pressed: ${key}`);
   if (playerPosition.x + elementsSize > canvasSize) {
     console.log("OUT");
