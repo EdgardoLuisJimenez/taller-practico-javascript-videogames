@@ -21,6 +21,8 @@ const gitftPosition = {
   y: undefined,
 };
 
+let enemyPositions = [];
+
 window.addEventListener("load", setCanvasSize);
 window.addEventListener("resize", setCanvasSize);
 
@@ -44,10 +46,12 @@ function setCanvasSize() {
 
 function startGame() {
   game.clearRect(0, 0, canvas.width, canvas.height);
+  enemyPositions = [];
+
   game.font = elementsSize + "px Verdana";
   game.textAlign = "end";
 
-  const map = maps[1];
+  const map = maps[0];
   const mapRows = map.trim().split("\n");
   const mapRowCols = mapRows.map((row) => row.trim().split(""));
 
@@ -64,6 +68,11 @@ function startGame() {
       } else if (col == "I") {
         gitftPosition.x = positionX;
         gitftPosition.y = positionY;
+      } else if (col == 'X') {
+        enemyPositions.push({
+          x: positionX.toFixed(3),
+          y: positionY.toFixed(3),
+        })
       }
     });
   });
@@ -80,6 +89,16 @@ function movePlayer() {
 
   if (giftCollission) {
     console.log("Subistes de nivel!!");
+  }
+
+  const enemyCollision = enemyPositions.find(enemy => {
+    const enemyCollisionX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3);
+    const enemyCollisionY = enemy.y.toFixed(3) = playerPosition.y.toFixed(3);
+    return enemyCollisionX && enemyCollisionY;
+  });
+
+  if (enemyCollision) {
+    console.log('Chocaste contra un enemigo!!');
   }
 
   game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
