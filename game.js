@@ -8,11 +8,16 @@ const btnLeft = document.querySelector("#left");
 const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
 const spanLives = document.querySelector("#lives");
+const spanTime = document.querySelector("#time");
 
 let canvasSize;
 let elementsSize;
 let level = 0;
 let lives = 3;
+
+let timeStart;
+let timePlayer;
+let timeInterval;
 
 const playerPosition = {
   x: undefined,
@@ -59,6 +64,11 @@ function startGame() {
   if (!map) {
     gameWin();
     return;
+  }
+
+  if (!timeStart) {
+    timeStart = Date.now();
+    timeInterval = setInterval(showTime, 100);
   }
 
   const mapRows = map.trim().split("\n");
@@ -125,10 +135,10 @@ function levelFail() {
   console.log("Chocastes contra un enemigo!!");
   lives--;
 
-
   if (lives <= 0) {
     level = 0;
     lives = 3;
+    timeStart = undefined;
   }
 
   playerPosition.x = undefined;
@@ -138,10 +148,27 @@ function levelFail() {
 
 function gameWin() {
   console.log("Terminastes el juego!!");
+  clearInterval(timeInterval);
 }
 
 function showLives() {
-  spanLives.innerHTML = emojis['HEART'].repeat(lives);
+  spanLives.innerHTML = emojis["HEART"].repeat(lives);
+}
+
+function formatTime(ms) {
+  const cs = parseInt(ms / 10) % 100; // Centisegundos
+  const seg = parseInt(ms / 1000) % 60; // Segundos
+  const min = parseInt(ms / 60000) % 60; // Minutos
+  const hr = parseInt(ms / 3600000) % 24; // Horas
+  const csStr = `0${cs}`.slice(-2);
+  const segStr = `0${seg}`.slice(-2);
+  const minStr = `0${min}`.slice(-2);
+  const hrStr = `0${hr}`.slice(-2);
+  return `${hrStr}:${minStr}:${segStr}:${csStr}`;
+}
+
+function showTime() {
+  spanTime.innerHTML = formatTime(Date.now() - timeStart);
 }
 
 btnUp.addEventListener("click", moveUp);
