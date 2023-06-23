@@ -36,8 +36,11 @@ let enemyPositions = [];
 window.addEventListener("load", setCanvasSize);
 window.addEventListener("resize", setCanvasSize);
 
+function fixNumber(number) {
+  return Number(number.toFixed(0));
+}
+
 function setCanvasSize() {
-  let canvasSize;
 
   if (window.innerHeight > window.innerWidth) {
     canvasSize = window.innerWidth * 0.7;
@@ -215,7 +218,7 @@ window.addEventListener("keydown", (event) => {
 
 function moveUp(key) {
   console.log(`Pressed: ${key}`);
-  if (Math.ceil(playerPosition.y - elementsSize) < elementsSize) {
+  if (fixNumber((playerPosition.y - elementsSize)) < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.y -= elementsSize;
@@ -224,7 +227,7 @@ function moveUp(key) {
 }
 function moveLeft(key) {
   console.log(`Pressed: ${key}`);
-  if (Math.ceil(playerPosition.x - elementsSize) < elementsSize) {
+  if (fixNumber((playerPosition.x - elementsSize)) < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.x -= elementsSize;
@@ -233,7 +236,7 @@ function moveLeft(key) {
 }
 function moveRight(key) {
   console.log(`Pressed: ${key}`);
-  if (Math.ceil(playerPosition.x + elementsSize) > canvasSize) {
+  if (fixNumber((playerPosition.x + elementsSize)) > canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.x += elementsSize;
@@ -242,7 +245,7 @@ function moveRight(key) {
 }
 function moveDown(key) {
   console.log(`Pressed: ${key}`);
-  if (Math.ceil(playerPosition.y + elementsSize) > canvasSize) {
+  if (fixNumber((playerPosition.y + elementsSize)) > canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.y += elementsSize;
