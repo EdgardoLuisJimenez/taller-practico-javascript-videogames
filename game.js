@@ -50,23 +50,21 @@ function fixNumber(number) {
 }
 
 function positionPlayer() {
-  console.log("Ejecucion");
   if (
-    (positionDoor.x != oldCanvasSize.x ||
-    positionDoor.y != oldCanvasSize.y) && canvasSize != undefined
+    (positionDoor.x != oldCanvasSize.x || positionDoor.y != oldCanvasSize.y) &&
+    canvasSize != undefined
   ) {
     playerPosition.x =
-    (oldCanvasSize.x * canvasSize) / oldCanvasSize.canvasSize;
+      (oldCanvasSize.x * canvasSize) / oldCanvasSize.canvasSize;
     playerPosition.y =
-    (oldCanvasSize.y * canvasSize) / oldCanvasSize.canvasSize;
+      (oldCanvasSize.y * canvasSize) / oldCanvasSize.canvasSize;
 
-    playerPosition.x = (playerPosition.x);
-    playerPosition.y = (playerPosition.y);
+    playerPosition.x = playerPosition.x;
+    playerPosition.y = playerPosition.y;
   }
 }
 
 function setCanvasSize() {
-
   if (window.innerHeight > window.innerWidth) {
     canvasSize = window.innerWidth * 0.7;
   } else {
@@ -117,8 +115,8 @@ function startGame() {
       let positionX = elementsSize * (colIndex + 1);
       let positionY = elementsSize * (rowIndex + 1);
 
-      positionX = (positionX);
-      positionY = (positionY);
+      positionX = positionX;
+      positionY = positionY;
       game.fillText(emoji, positionX, positionY);
 
       if (!playerPosition.x && !playerPosition.y && col == "O") {
