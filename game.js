@@ -9,13 +9,22 @@ const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
 const spanLives = document.querySelector("#lives");
 const spanTime = document.querySelector("#time");
-const spanRecord = document.querySelector('#record');
-const pResult = document.querySelector('#result');
+const spanRecord = document.querySelector("#record");
+const pResult = document.querySelector("#result");
 
 let canvasSize;
 let elementsSize;
 let level = 0;
 let lives = 3;
+let oldCanvasSize = {
+  canvasSize: undefined,
+  x: undefined,
+  y: undefined,
+};
+let positionDoor = {
+  x: undefined,
+  y: undefined,
+};
 
 let timeStart;
 let timePlayer;
@@ -26,7 +35,7 @@ const playerPosition = {
   y: undefined,
 };
 
-const gitftPosition = {
+const giftPosition = {
   x: undefined,
   y: undefined,
 };
@@ -37,7 +46,23 @@ window.addEventListener("load", setCanvasSize);
 window.addEventListener("resize", setCanvasSize);
 
 function fixNumber(number) {
-  return Number(number.toFixed(0));
+  return Math.ceil(number.toFixed(5));
+}
+
+function positionPlayer() {
+  console.log("Ejecucion");
+  if (
+    (positionDoor.x != oldCanvasSize.x ||
+    positionDoor.y != oldCanvasSize.y) && canvasSize != undefined
+  ) {
+    playerPosition.x =
+    (oldCanvasSize.x * canvasSize) / oldCanvasSize.canvasSize;
+    playerPosition.y =
+    (oldCanvasSize.y * canvasSize) / oldCanvasSize.canvasSize;
+
+    playerPosition.x = (playerPosition.x);
+    playerPosition.y = (playerPosition.y);
+  }
 }
 
 function setCanvasSize() {
@@ -47,7 +72,7 @@ function setCanvasSize() {
   } else {
     canvasSize = window.innerHeight * 0.7;
   }
-  canvasSize = Number(canvasSize.toFixed(0));
+  canvasSize = fixNumber(canvasSize);
 
   canvas.setAttribute("width", canvasSize);
   canvas.setAttribute("height", canvasSize);
@@ -57,6 +82,7 @@ function setCanvasSize() {
   playerPosition.x = undefined;
   playerPosition.y = undefined;
 
+  positionPlayer();
   startGame();
 }
 
@@ -88,16 +114,21 @@ function startGame() {
   mapRowCols.forEach((row, rowIndex) => {
     row.forEach((col, colIndex) => {
       const emoji = emojis[col];
-      const positionX = elementsSize * (colIndex + 1);
-      const positionY = elementsSize * (rowIndex + 1);
+      let positionX = elementsSize * (colIndex + 1);
+      let positionY = elementsSize * (rowIndex + 1);
+
+      positionX = (positionX);
+      positionY = (positionY);
       game.fillText(emoji, positionX, positionY);
 
       if (!playerPosition.x && !playerPosition.y && col == "O") {
         playerPosition.x = positionX;
         playerPosition.y = positionY;
+        positionDoor.x = positionX;
+        positionDoor.y = positionY;
       } else if (col == "I") {
-        gitftPosition.x = positionX;
-        gitftPosition.y = positionY;
+        giftPosition.x = positionX;
+        giftPosition.y = positionY;
       } else if (col == "X") {
         enemyPositions.push({
           x: positionX,
@@ -107,14 +138,18 @@ function startGame() {
     });
   });
 
+  oldCanvasSize.canvasSize = canvasSize;
+  oldCanvasSize.x = playerPosition.x;
+  oldCanvasSize.y = playerPosition.y;
+
   movePlayer();
 }
 
 function movePlayer() {
   const giftCollissionX =
-    playerPosition.x.toFixed(3) == gitftPosition.x.toFixed(3);
+    playerPosition.x.toFixed(0) == giftPosition.x.toFixed(0);
   const giftCollissionY =
-    playerPosition.y.toFixed(3) == gitftPosition.y.toFixed(3);
+    playerPosition.y.toFixed(0) == giftPosition.y.toFixed(0);
   const giftCollission = giftCollissionX && giftCollissionY;
 
   if (giftCollission) {
@@ -171,9 +206,9 @@ function gameWin() {
     }
   } else {
     localStorage.setItem("record_time", playerTime);
-    pResult.innerHTML = "Primera vez? Muy bien, pero ahora trata de superar tu tiempo";
+    pResult.innerHTML =
+      "Primera vez? Muy bien, pero ahora trata de superar tu tiempo";
   }
-  console.log({ recordTime, playerTime });
 }
 
 function showLives() {
@@ -197,7 +232,7 @@ function showTime() {
 }
 
 function showRecord() {
-  spanRecord.innerHTML = localStorage.getItem('record_time')
+  spanRecord.innerHTML = localStorage.getItem("record_time");
 }
 
 btnUp.addEventListener("click", moveUp);
@@ -218,7 +253,7 @@ window.addEventListener("keydown", (event) => {
 
 function moveUp(key) {
   console.log(`Pressed: ${key}`);
-  if (fixNumber((playerPosition.y - elementsSize)) < elementsSize) {
+  if (fixNumber(playerPosition.y - elementsSize) < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.y -= elementsSize;
@@ -227,7 +262,7 @@ function moveUp(key) {
 }
 function moveLeft(key) {
   console.log(`Pressed: ${key}`);
-  if (fixNumber((playerPosition.x - elementsSize)) < elementsSize) {
+  if (fixNumber(playerPosition.x - elementsSize) < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.x -= elementsSize;
@@ -236,7 +271,7 @@ function moveLeft(key) {
 }
 function moveRight(key) {
   console.log(`Pressed: ${key}`);
-  if (fixNumber((playerPosition.x + elementsSize)) > canvasSize) {
+  if (fixNumber(playerPosition.x + elementsSize) > canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.x += elementsSize;
@@ -245,7 +280,7 @@ function moveRight(key) {
 }
 function moveDown(key) {
   console.log(`Pressed: ${key}`);
-  if (fixNumber((playerPosition.y + elementsSize)) > canvasSize) {
+  if (fixNumber(playerPosition.y + elementsSize) > canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.y += elementsSize;
