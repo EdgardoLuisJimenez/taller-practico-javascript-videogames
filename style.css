@@ -91,6 +91,37 @@ p {
   font-size: 1.3rem;
 }
 
+#welcome {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+  opacity: .8;
+  font-family: 'LVDC Game Over 2', sans-serif;
+  color: white; 
+  background-color: black;                                
+}
+
+#welcome p:first-child {
+  color: #fdef05;
+  font-size: 5.0rem;
+}
+#game-over p:nth-child(2) {
+  color: white;
+  font-size: 1.3rem;
+}
+#play-game {
+  width: 150px;
+}
+
 @media (max-width: 440px) {
   button {
     margin-top: 5px;

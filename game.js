@@ -2,6 +2,39 @@
  * @type {HTMLCanvasElement};
  */
 document.addEventListener("DOMContentLoaded", () => {
+  let welcomeDiv = document.createElement("div");
+  welcomeDiv.id = "welcome";
+
+  let welcomeText1 = document.createElement("p");
+  welcomeText1.textContent = "Welcome";
+  welcomeDiv.appendChild(welcomeText1);
+
+  let welcomeText2 = document.createElement("p");
+  welcomeText2.textContent = "I hope you have fun with this game";
+  welcomeDiv.appendChild(welcomeText2);
+
+  let buttonContainer = document.createElement("div");
+  buttonContainer.id = "game-over--button";
+
+  let playGameButton = document.createElement("button");
+  playGameButton.id = "play-game";
+  playGameButton.textContent = "Play Game";
+  buttonContainer.appendChild(playGameButton);
+
+  welcomeDiv.appendChild(buttonContainer);
+
+  document.body.appendChild(welcomeDiv);
+
+  playGameButton.addEventListener("click", () => {
+    while (welcomeDiv.firstChild) {
+      welcomeDiv.firstChild.remove();
+    }
+    welcomeDiv.remove();
+    loadGame();
+  });
+});
+
+function loadGame() {
   let gameContainer = document.createElement("div");
   gameContainer.className = "game-container";
 
@@ -56,14 +89,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let body = document.querySelector("body");
   body.appendChild(gameContainer);
 
-  let mapsScript = document.createElement("script");
-  mapsScript.src = "./maps.js";
-  body.appendChild(mapsScript);
+  loadInteractivityOfTheGame();
+}
 
-  loadGameScript();
-});
-
-function loadGameScript() {
+function loadInteractivityOfTheGame() {
+  console.log("ENtro a la interactividad");
   const canvas = document.querySelector("#game");
   const game = canvas.getContext("2d");
   const btnUp = document.querySelector("#up");
@@ -91,6 +121,93 @@ function loadGameScript() {
 
   let timeStart;
   let timeInterval;
+  let enemyPositions = [];
+
+  const playerPosition = {
+    x: undefined,
+    y: undefined,
+  };
+
+  const emojis = {
+    "-": " ",
+    O: "🚪",
+    X: "💣",
+    I: "🎁",
+    PLAYER: "💀",
+    BOMB_COLLISION: "🔥",
+    GAME_OVER: "👎",
+    WIN: "🏆",
+    HEART: "❤️",
+  };
+
+  const maps = [];
+  maps.push(`
+    IXXXXXXXXX
+    -XXXXXXXXX
+    -XXXXXXXXX
+    -XXXXXXXXX
+    -XXXXXXXXX
+    -XXXXXXXXX
+    -XXXXXXXXX
+    -XXXXXXXXX
+    -XXXXXXXXX
+    OXXXXXXXXX
+  `);
+  maps.push(`
+    O--XXXXXXX
+    X--XXXXXXX
+    XX----XXXX
+    X--XX-XXXX
+    X-XXX--XXX
+    X-XXXX-XXX
+    XX--XX--XX
+    XX--XXX-XX
+    XXXX---IXX
+    XXXXXXXXXX
+    `);
+  maps.push(`
+    I-----XXXX
+    XXXXX-XXXX
+    XX----XXXX
+    XX-XXXXXXX
+    XX-----XXX
+    XXXXXX-XXX
+    XX-----XXX
+    XX-XXXXXXX
+    XX-----OXX
+    XXXXXXXXXX
+  `);
+  const giftPosition = {
+    x: undefined,
+    y: undefined,
+  };
+
+  setCanvasSize();
+
+  window.addEventListener("load", setCanvasSize);
+  window.addEventListener("resize", setCanvasSize);
+
+  function setCanvasSize() {
+    console.log("Entro al canvasSize");
+    if (window.innerHeight > window.innerWidth) {
+      canvasSize = window.innerWidth * 0.7;
+    } else {
+      canvasSize = window.innerHeight * 0.7;
+    }
+    canvasSize = fixNumber(canvasSize);
+
+    canvas.setAttribute("width", canvasSize);
+    canvas.setAttribute("height", canvasSize);
+
+    elementsSize = canvasSize / 10;
+
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+
+    positionPlayer();
+    loadVariableInitialization();
+    startGame();
+  }
 
   function loadAddEventListener() {
     btnUp.addEventListener("click", moveUp);
@@ -103,23 +220,7 @@ function loadGameScript() {
   function loadVariableInitialization() {
     level = 0;
     lives = 3;
-    console.log(emojis["HEART"].repeat(lives));
   }
-
-  const playerPosition = {
-    x: undefined,
-    y: undefined,
-  };
-
-  const giftPosition = {
-    x: undefined,
-    y: undefined,
-  };
-
-  let enemyPositions = [];
-
-  window.addEventListener("load", setCanvasSize);
-  window.addEventListener("resize", setCanvasSize);
 
   function fixNumber(number) {
     return Math.ceil(number.toFixed(5));
@@ -139,27 +240,6 @@ function loadGameScript() {
       playerPosition.x = playerPosition.x;
       playerPosition.y = playerPosition.y;
     }
-  }
-
-  function setCanvasSize() {
-    if (window.innerHeight > window.innerWidth) {
-      canvasSize = window.innerWidth * 0.7;
-    } else {
-      canvasSize = window.innerHeight * 0.7;
-    }
-    canvasSize = fixNumber(canvasSize);
-
-    canvas.setAttribute("width", canvasSize);
-    canvas.setAttribute("height", canvasSize);
-
-    elementsSize = canvasSize / 10;
-
-    playerPosition.x = undefined;
-    playerPosition.y = undefined;
-
-    positionPlayer();
-    loadVariableInitialization();
-    startGame();
   }
 
   function startGame() {
