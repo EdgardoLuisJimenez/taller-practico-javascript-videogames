@@ -60,6 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
   mapsScript.src = "./maps.js";
   body.appendChild(mapsScript);
 
+  loadGameScript();
+});
+
+function loadGameScript() {
   const canvas = document.querySelector("#game");
   const game = canvas.getContext("2d");
   const btnUp = document.querySelector("#up");
@@ -73,8 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let canvasSize;
   let elementsSize;
-  let level = 0;
-  let lives = 3;
+  let level;
+  let lives;
   let oldCanvasSize = {
     canvasSize: undefined,
     x: undefined,
@@ -88,6 +92,20 @@ document.addEventListener("DOMContentLoaded", () => {
   let timeStart;
   let timePlayer;
   let timeInterval;
+
+  function loadAddEventListener() {
+    btnUp.addEventListener("click", moveUp);
+    btnLeft.addEventListener("click", moveLeft);
+    btnRight.addEventListener("click", moveRight);
+    btnDown.addEventListener("click", moveDown);
+    window.addEventListener("keydown", handleKeyDown);
+  }
+
+  function loadVariableInitialization() {
+    level = 0;
+    lives = 3;
+    console.log(emojis["HEART"].repeat(lives));
+  }
 
   const playerPosition = {
     x: undefined,
@@ -141,10 +159,12 @@ document.addEventListener("DOMContentLoaded", () => {
     playerPosition.y = undefined;
 
     positionPlayer();
+    loadVariableInitialization();
     startGame();
   }
 
   function startGame() {
+    loadAddEventListener();
     game.clearRect(0, 0, canvas.width, canvas.height);
     enemyPositions = [];
 
@@ -237,6 +257,9 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Chocastes contra un enemigo!!");
     lives--;
 
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+
     if (lives <= 0) {
       level = 0;
       lives = 3;
@@ -244,10 +267,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Llamada a la funcion
       showGameOver();
+      return;
     }
 
-    playerPosition.x = undefined;
-    playerPosition.y = undefined;
     startGame();
   }
 
@@ -296,11 +318,11 @@ document.addEventListener("DOMContentLoaded", () => {
     spanRecord.innerHTML = localStorage.getItem("record_time");
   }
 
-  btnUp.addEventListener("click", moveUp);
-  btnLeft.addEventListener("click", moveLeft);
-  btnRight.addEventListener("click", moveRight);
-  btnDown.addEventListener("click", moveDown);
-  window.addEventListener("keydown", handleKeyDown);
+  // btnUp.addEventListener("click", moveUp);
+  // btnLeft.addEventListener("click", moveLeft);
+  // btnRight.addEventListener("click", moveRight);
+  // btnDown.addEventListener("click", moveDown);
+  // window.addEventListener("keydown", handleKeyDown);
 
   function moveUp(key) {
     console.log(`Pressed: ${key}`);
@@ -348,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (event.key == "ArrowDown") {
       moveDown(event.key);
     }
-  };
+  }
 
   function showGameOver() {
     // Game Over
@@ -382,7 +404,15 @@ document.addEventListener("DOMContentLoaded", () => {
     btnLeft.removeEventListener("click", moveLeft);
     btnRight.removeEventListener("click", moveRight);
     btnDown.removeEventListener("click", moveDown);
-    
+
     window.removeEventListener("keydown", handleKeyDown);
+
+    yesButton.addEventListener("click", () => {
+      while (gameOver.firstChild) {
+        gameOver.firstChild.remove();
+      }
+      gameOver.remove();
+      startGame();
+    });
   }
-});
+}
