@@ -53,6 +53,38 @@ document.addEventListener("DOMContentLoaded", () => {
   let body = document.querySelector("body");
   body.appendChild(gameContainer);
 
+
+
+  // Game Over
+  let gameOver = document.createElement("div");
+  gameOver.id = "game-over";
+
+  let gameOverText = document.createElement("p");
+  gameOverText.textContent = "Game over";
+  gameOver.appendChild(gameOverText);
+
+  let playAgainText = document.createElement("p");
+  playAgainText.textContent = "Play Again?";
+  gameOver.appendChild(playAgainText);
+
+  let buttonContainer = document.createElement("div");
+  buttonContainer.id = "game-over--button";
+
+  let yesButton = document.createElement("button");
+  yesButton.textContent = "Yes";
+  buttonContainer.appendChild(yesButton);
+
+  let noButton = document.createElement("button");
+  noButton.textContent = "No";
+  buttonContainer.appendChild(noButton);
+
+  gameOver.appendChild(buttonContainer);
+
+  document.body.appendChild(gameOver);
+
+
+
+
   let mapsScript = document.createElement("script");
   mapsScript.src = "./maps.js";
   body.appendChild(mapsScript);

@@ -8,6 +8,7 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 0;
   padding: 0;
+  font-size: 62.5%;
 }
 
 .game-container {
@@ -17,6 +18,7 @@ body {
   flex-wrap: wrap;
   height: 100vh;
   width: 100vw;
+  position: relative;
 }
 
 canvas {
@@ -58,6 +60,36 @@ p {
   display: block;
   margin: 0;
   width: 100%;
+}
+
+#game-over {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+
+  opacity: .8;
+  font-family: 'LVDC Game Over 2', sans-serif;
+  color: white; 
+  
+  background-color: black;                                
+}
+
+#game-over p:first-child {
+  color: red;
+  font-size: 5.0rem;   
+}
+#game-over p:nth-child(2) {
+  color: white;
+  font-size: 1.3rem;
 }
 
 @media (max-width: 440px) {
