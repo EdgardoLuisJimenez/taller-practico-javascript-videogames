@@ -90,7 +90,6 @@ function loadGameScript() {
   };
 
   let timeStart;
-  let timePlayer;
   let timeInterval;
 
   function loadAddEventListener() {
