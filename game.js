@@ -2,6 +2,10 @@
  * @type {HTMLCanvasElement};
  */
 document.addEventListener("DOMContentLoaded", () => {
+  initialLayout();
+});
+
+function initialLayout() {
   let welcomeDiv = document.createElement("div");
   welcomeDiv.id = "welcome";
 
@@ -32,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     welcomeDiv.remove();
     loadGame();
   });
-});
+}
 
 function loadGame() {
   let gameContainer = document.createElement("div");
@@ -93,7 +97,6 @@ function loadGame() {
 }
 
 function loadInteractivityOfTheGame() {
-  console.log("ENtro a la interactividad");
   const canvas = document.querySelector("#game");
   const game = canvas.getContext("2d");
   const btnUp = document.querySelector("#up");
@@ -371,6 +374,9 @@ function loadInteractivityOfTheGame() {
       pResult.innerHTML =
         "Primera vez? Muy bien, pero ahora trata de superar tu tiempo";
     }
+    setTimeout(() => {
+      removeAllLabelsDOM();
+    }, 2000);
   }
 
   function showLives() {
@@ -396,12 +402,6 @@ function loadInteractivityOfTheGame() {
   function showRecord() {
     spanRecord.innerHTML = localStorage.getItem("record_time");
   }
-
-  // btnUp.addEventListener("click", moveUp);
-  // btnLeft.addEventListener("click", moveLeft);
-  // btnRight.addEventListener("click", moveRight);
-  // btnDown.addEventListener("click", moveDown);
-  // window.addEventListener("keydown", handleKeyDown);
 
   function moveUp(key) {
     console.log(`Pressed: ${key}`);
@@ -493,5 +493,16 @@ function loadInteractivityOfTheGame() {
       gameOver.remove();
       startGame();
     });
+
+    noButton.addEventListener("click", () => {
+      removeAllLabelsDOM();
+    });
+  }
+  function removeAllLabelsDOM() {
+    const rootElement = document.body;
+    while (rootElement.firstChild) {
+      rootElement.firstChild.remove();
+    }
+    initialLayout();
   }
 }
