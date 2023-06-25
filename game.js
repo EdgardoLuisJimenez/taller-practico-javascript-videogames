@@ -496,6 +496,7 @@ function loadInteractivityOfTheGame() {
 
     noButton.addEventListener("click", () => {
       removeAllLabelsDOM();
+      initialLayout();
     });
   }
   function removeAllLabelsDOM() {
@@ -503,6 +504,5 @@ function loadInteractivityOfTheGame() {
     while (rootElement.firstChild) {
       rootElement.firstChild.remove();
     }
-    initialLayout();
   }
 }
